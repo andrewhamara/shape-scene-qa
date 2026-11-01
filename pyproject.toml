@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nanoagent-shape-scene-qa"
-version = "0.1.0"
+version = "0.2.0"
 description = "Answer questions about pictures of shapes, checked against the scenes' true objects: a NanoAgent plugin"
 requires-python = ">=3.12"
 dependencies = ["mcp>=1.27,<2", "slimconfig", "pillow>=11,<13"]

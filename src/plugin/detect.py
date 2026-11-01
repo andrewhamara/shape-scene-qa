@@ -17,7 +17,8 @@ from PIL import Image
 
 from contract import Color, SceneInput, SceneObject, SceneOutput, Shape, Size
 
-SCENES = Path(__file__).with_name("scenes")
+# The scenes live in ui/scenes/, where the plugin's page shows them too.
+SCENES = Path(__file__).resolve().parents[2] / "ui" / "scenes"
 SCENE_ID = re.compile(r"^scene-\d{2}$")
 BACKGROUND = (255, 255, 255)
 PALETTE = {

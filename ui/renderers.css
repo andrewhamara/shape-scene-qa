@@ -1,0 +1,50 @@
+/* Styles for this plugin's renderers (renderers.js): a scene's picture with its objects boxed. They
+   apply only inside each renderer's output, in its own shadow root, and use the kit's variables, so
+   they follow the host's light and dark themes; the picture keeps its white background. */
+
+.scene-card { display: grid; gap: 10px; min-width: 0; }
+.scene-title, .scene-question { font-size: 14px; }
+.scene-question { font-weight: 600; }
+.scene-answer { font-size: 15px; }
+.scene-answer strong { font-size: 18px; margin-right: 4px; }
+
+.scene-frame {
+  position: relative; width: 100%; max-width: 640px; aspect-ratio: 480 / 320;
+  border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; background: #fff;
+}
+.scene-img { display: block; width: 100%; height: 100%; image-rendering: pixelated; }
+
+.scene-box {
+  position: absolute; left: var(--left); top: var(--top); width: var(--side-x); height: var(--side-y);
+  box-sizing: border-box; border: 1.5px solid #9a9a9a; border-radius: 3px;
+}
+.scene-box.picked { border: 3px solid #f08c00; }
+.scene-box.anchor { border: 3px solid #111; }
+.scene-box.missed { border: 3px dashed #d62828; }
+.scene-id {
+  position: absolute; left: -1px; bottom: 100%; padding: 0 4px; font-size: 11px; line-height: 15px;
+  font-weight: 650; color: #fff; background: #777; border-radius: 3px 3px 3px 0;
+}
+.scene-box.picked .scene-id { background: #f08c00; }
+.scene-box.anchor .scene-id { background: #111; }
+.scene-box.missed .scene-id { background: #d62828; }
+
+.scene-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12.5px; }
+.scene-key { display: inline-flex; align-items: center; gap: 6px; }
+.scene-swatch { width: 12px; height: 12px; border-radius: 2px; border: 3px solid #9a9a9a; box-sizing: border-box; }
+.scene-swatch.picked { border-color: #f08c00; }
+.scene-swatch.anchor { border-color: #111; }
+.scene-swatch.missed { border-color: #d62828; border-style: dashed; }
+
+.scene-list { margin: 0; padding-left: 0; list-style: none; display: grid; gap: 2px; font-size: 13px; }
+.scene-list strong { display: inline-block; min-width: 1.6em; }
+.scene-box.edge .scene-id { bottom: auto; top: 0; border-radius: 0 0 3px 0; }
+
+.scene-checks { margin: 0; padding: 0; list-style: none; display: grid; gap: 3px; font-size: 13px; }
+.scene-check { display: grid; grid-template-columns: 1.2em 1fr; gap: 6px; }
+.scene-check code { font-size: 12px; }
+.scene-mark { font-weight: 700; text-align: center; }
+.scene-check.ok .scene-mark { color: var(--ok); }
+.scene-check.bad .scene-mark { color: var(--bad); }
+.scene-check.skipped { color: var(--muted); }
+.scene-why { display: block; color: var(--muted); font-size: 12.5px; overflow-wrap: anywhere; }

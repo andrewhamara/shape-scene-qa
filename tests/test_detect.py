@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+import re
 from pathlib import Path
 
 import pytest
@@ -46,3 +48,10 @@ def test_refuses_a_region_of_another_size() -> None:
     ImageDraw.Draw(image).rectangle((10, 10, 39, 34), fill=(220, 40, 40))
     with pytest.raises(ValueError, match="neither 25 nor 51"):
         detect(image)
+
+
+def test_the_page_boxes_the_objects_the_scenes_were_drawn_with() -> None:
+    text = (Path(__file__).resolve().parents[1] / "ui" / "scenes.js").read_text()
+    scenes = text.split("export const SCENES = ", 1)[1].rstrip().removesuffix(";")
+    page = json.loads(re.sub(r",(\s*[\]}])", r"\1", scenes))
+    assert page == {name: list(objects) for name, objects in SCENES.items()}

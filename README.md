@@ -20,7 +20,11 @@ the answer and the objects it rests on.
 | Task | Does | Runner |
 |---|---|---|
 | `scene-question` | Answers a question about a scene and names the objects the answer rests on | `agent`, with `detect_objects`; reference `answer_key` |
-| `detect-objects` | Lists the objects in a scene's picture | `tool` (`detect_objects`) |
+| `detect-objects` | Shows a scene's picture and lists its objects | `tool` (`detect_objects`) |
+
+The page shows each result on the scene's picture (`ui/renderers.js`): `detect-objects` with every
+object numbered, `scene-question` with the objects the agent submitted, the anchor and, when the
+check fails, the objects it missed. So a person who has never seen the scenes asks to see one first.
 
 ## The task
 
@@ -43,9 +47,9 @@ objects, or a tie for nearest.
 
 ## Ground truth
 
-`src/plugin/tools_dev/make_scenes.py` draws every scene from fixed seeds
-(scenes 01 to 36) or by hand (37 to 40, the boundary scenes) and writes the
-objects it drew to `verifier/scenes.py`. It refuses to write anything unless
+`src/plugin/tools_dev/make_scenes.py` draws every scene, `ui/scenes/scene-NN.png`, from fixed
+seeds (scenes 01 to 36) or by hand (37 to 40, the boundary scenes) and writes the
+objects it drew to `verifier/scenes.py` (and `ui/scenes.js`, for the page). It refuses to write anything unless
 `detect_objects` finds exactly the drawn objects in every image, and the tests
 check that again. The verifier never reads an image and never trusts a tool:
 it re-derives every answer from its own copy of the drawn objects.
@@ -100,9 +104,10 @@ give.
 ├── .gitignore
 ├── .env             # needed environment variable names (none here)
 ├── src/plugin/      # the MCP server (__main__.py), detect.py, answer.py, questions.py,
-│                    #   scenes/ (the 40 PNGs) and tools_dev/make_scenes.py (draws them)
+│                    #   and tools_dev/ (make_scenes.py draws the scenes; demo.py shows a few verdicts)
 ├── tests/           # the detector, the rules, the verifier and a scripted agent over every scene
-├── ui/              # outputs drawn from their JSON Schema
+├── ui/              # scenes/ (the 40 PNGs, which the detector reads and the page shows), scenes.js
+│                    #   (their objects, for boxing them) and renderers.js/.css (results on the picture)
 ├── product/         # the product page a catalog shows: product.yaml and icon.svg
 └── verifier/        # deterministic verifier: scenes.py (the truth), questions.py (a copy of the rules),
                      #   one module per tool, and task.py for scene-question

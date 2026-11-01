@@ -1,7 +1,7 @@
 _ > nanoagent.plugin.v0001.ManifestConfig:
 id: shape-scene-qa
 name: Shape Scene QA
-version: 0.1.0
+version: 0.2.0
 status: ready
 spec: nanoagent.plugin/v0001
 
@@ -37,7 +37,7 @@ tasks > dict[contract.Task, nanoagent.plugin.v0001.TaskConfig]:
       Answer. count: how many objects the relation picks out, in digits ("0", "3"). exists: "yes" if it picks out at least one, else "no". color, shape or size: that attribute of the one object it picks out, in lowercase ("red", "circle", "small").
       Submit. Call submit with the scene, objects (the ids of the objects the relation picks out, ascending; [] when none) and answer, in exactly the forms above.
   detect-objects:
-    description: List the objects in a scene's picture, with their shapes, colors, sizes and positions
+    description: Show a scene's picture and list its objects, with their shapes, colors, sizes and positions; use it whenever the person wants to see a scene or what is in it
     runner: tool
     tools: [detect_objects]
     reference: null

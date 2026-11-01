@@ -6,6 +6,7 @@ highlights:
   - "Counting, yes or no, and color, shape or size questions, with left, right, above, below and nearest relations"
   - "8 checks, each shown with what was expected and found; the answer and the objects it picks must both be right"
 steps:
-  - "Name a scene, scene-01 to scene-40, and ask a question about its shapes"
+  - "Ask to see a scene, such as show me scene-07: its picture appears with every object numbered"
+  - "Ask a question about its shapes, such as how many red objects are left of the large blue square in scene-07"
   - "The agent looks at the picture through the detector, finds the objects your question picks out, and answers"
-  - "See the answer, the objects behind it, and every check of the verdict"
+  - "See the answer on the picture: the objects the agent picked, the anchor, any it missed, and every check of the verdict"

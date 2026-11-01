@@ -1,4 +1,5 @@
-"""Draws the bundled scenes, src/plugin/scenes/scene-NN.png, and writes their true objects to verifier/scenes.py.
+"""Draws the bundled scenes, ui/scenes/scene-NN.png, and writes their true objects to verifier/scenes.py
+and, for the page's pictures, ui/scenes.js.
 
     uv run python -m plugin.tools_dev.make_scenes
 
@@ -9,6 +10,7 @@ Running it again writes the same files.
 
 from __future__ import annotations
 
+import json
 import random
 from pathlib import Path
 
@@ -18,6 +20,7 @@ from plugin.detect import PALETTE, SCENES, detect
 
 ROOT = Path(__file__).resolve().parents[3]
 TRUTH = ROOT / "verifier" / "scenes.py"
+PAGE = ROOT / "ui" / "scenes.js"
 WIDTH, HEIGHT = 480, 320
 GAP = 6  # the fewest pixels between two random objects' boxes
 RADIUS = {"small": 12, "large": 25}  # a side of 2 * radius + 1: 25 and 51 px
@@ -134,7 +137,21 @@ def main() -> None:
         lines.append("    ),")
     lines.append("}")
     TRUTH.write_text("\n".join(lines) + "\n")
-    print(f"wrote {len(scenes)} scenes to {SCENES} and {TRUTH}")
+    page = [
+        "// Each scene's objects, as src/plugin/tools_dev/make_scenes.py drew them, for renderers.js to box them",
+        "// on the picture. Generated: do not edit.",
+        f"export const WIDTH = {WIDTH};",
+        f"export const HEIGHT = {HEIGHT};",
+        "export const SIDES = { small: 25, large: 51 };",
+        "export const SCENES = {",
+    ]
+    for name, (_, expected) in scenes.items():
+        page.append(f'  "{name}": [')
+        page += [f"    {json.dumps(item)}," for item in expected]
+        page.append("  ],")
+    page.append("};")
+    PAGE.write_text("\n".join(page) + "\n")
+    print(f"wrote {len(scenes)} scenes to {SCENES}, {TRUTH} and {PAGE}")
 
 
 if __name__ == "__main__":
