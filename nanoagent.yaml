@@ -1,0 +1,44 @@
+_ > nanoagent.plugin.v0001.ManifestConfig:
+id: shape-scene-qa
+name: Shape Scene QA
+version: 0.1.0
+status: ready
+spec: nanoagent.plugin/v0001
+
+runtime > nanoagent.plugin.v0001.RuntimeConfig:
+  type: mcp_stdio
+  command: [uv, run, --frozen, python, -m, plugin]
+
+permissions > nanoagent.plugin.v0001.PermissionsConfig:
+  network > nanoagent.plugin.v0001.NetworkConfig:
+    hosts: []
+  filesystem > nanoagent.plugin.v0001.FilesystemConfig:
+    write: [workspace]
+
+# One entry per contract.Tool; its input and output classes are contract.TOOLS's.
+tools > dict[contract.Tool, nanoagent.plugin.v0001.ToolConfig]:
+  detect_objects:
+    description: Find every object in a bundled scene's image from its pixels, with its shape, color, size and center, in reading order
+  answer_key:
+    description: Answer a question about a scene from the objects detected in its image, refusing a question with no one answer
+
+# One entry per contract.Task; its input and output classes are contract.TASKS's.
+tasks > dict[contract.Task, nanoagent.plugin.v0001.TaskConfig]:
+  scene-question:
+    description: Answer a question about the shapes in a picture, such as how many red objects are left of the large blue square
+    runner: agent
+    tools: [detect_objects]
+    reference: answer_key
+    instructions: |-
+      Look. Call detect_objects once with the scene. It lists every object in the picture: id, shape, color, size, and its center x and y in pixels. x grows to the right and y grows downward, so a smaller y is higher in the picture.
+      Anchor. Unless the relation is anywhere, the anchor is the one object matching every attribute the anchor names (any matches everything).
+      Targets. The targets are the objects matching every attribute the target names, never the anchor itself.
+      Relation. anywhere: every target. left_of: targets whose x is less than the anchor's; right_of: greater. above: targets whose y is less than the anchor's; below: greater. Equal is neither: an object with the anchor's x is not left_of or right_of it. nearest_to: the one target whose center is closest to the anchor's center (the least (dx)^2 + (dy)^2), or none when there are no targets.
+      Answer. count: how many objects the relation picks out, in digits ("0", "3"). exists: "yes" if it picks out at least one, else "no". color, shape or size: that attribute of the one object it picks out, in lowercase ("red", "circle", "small").
+      Submit. Call submit with the scene, objects (the ids of the objects the relation picks out, ascending; [] when none) and answer, in exactly the forms above.
+  detect-objects:
+    description: List the objects in a scene's picture, with their shapes, colors, sizes and positions
+    runner: tool
+    tools: [detect_objects]
+    reference: null
+    instructions: Call detect_objects with the scene, scene-01 to scene-40, and return every object it finds.

@@ -1,0 +1,11 @@
+_ > nanoagent.plugin.v0001.ProductConfig:
+tagline: "Ask questions about pictures of shapes, and get answers checked against what was really drawn"
+summary: "Pick one of 40 pictures of colored squares, circles and triangles and ask about it: how many red shapes are left of the large blue square, what color the object nearest the gray circle is, whether any small triangle sits above the green one. The agent cannot see pixels, so a detector reads the picture and lists its objects; the agent reasons over that list and answers. A verifier that knows how each picture was drawn checks the answer and the objects it rests on."
+highlights:
+  - "40 bundled pictures, including tricky ones: shapes on the same line, ties for nearest, a picture with one object"
+  - "Counting, yes or no, and color, shape or size questions, with left, right, above, below and nearest relations"
+  - "8 checks, each shown with what was expected and found; the answer and the objects it picks must both be right"
+steps:
+  - "Name a scene, scene-01 to scene-40, and ask a question about its shapes"
+  - "The agent looks at the picture through the detector, finds the objects your question picks out, and answers"
+  - "See the answer, the objects behind it, and every check of the verdict"
